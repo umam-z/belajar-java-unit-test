@@ -1,9 +1,11 @@
 package zuper.programmer.test;
 
 import org.junit.jupiter.api.*;
+import org.opentest4j.TestAbortedException;
 import zuper.programmer.test.generator.SimpleDisplayNameGenerator;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.*;
 
 //@DisplayName("test untuk calculator class")
 @DisplayNameGeneration(SimpleDisplayNameGenerator.class)
@@ -59,5 +61,19 @@ public class CalculatorTest {
     @Disabled
     public void testComingSoon() {
 
+    }
+
+    @Test
+    public void testAborted() {
+        var profile = System.getenv("PROFILE");
+
+        if (!"DEV".equals(profile)) {
+            throw new TestAbortedException("Test dibatalkan karena Bukan DEV");
+        }
+    }
+
+    @Test
+    public void testAssumtions() {
+        assumeTrue("DEV".equals(System.getenv("PROFILE")));
     }
 }
