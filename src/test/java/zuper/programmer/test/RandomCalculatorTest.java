@@ -3,8 +3,12 @@ package zuper.programmer.test;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.Extensions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import zuper.programmer.test.resolver.RandomParameterResolver;
 
+import java.util.List;
 import java.util.Random;
 
 //@Extensions({
@@ -55,4 +59,30 @@ public class RandomCalculatorTest extends AbstractCalculatorTest{
 
         Assertions.assertEquals(expected, result);
     }
+
+    @DisplayName("Test Calculator")
+    @ParameterizedTest(name = "{displayName} dengan parameter {0}")
+    @ValueSource(ints = {1,2,3,4,5,6,7,8,9})
+    void testWithParameter(int value) {
+        var expected = value + value;
+        var actual = calculator.add(value, value);
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    public static List<Integer> parameterSource() {
+        return List.of(1,2,3,4,5,6,7,8,9);
+    }
+
+    @DisplayName("Test Calculator")
+    @ParameterizedTest(name = "{displayName} dengan parameter {0}")
+    @MethodSource({"parameterSource"})
+    void testWithMethodSource(Integer value) {
+        var expected = value + value;
+        var actual = calculator.add(value, value);
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+
 }
